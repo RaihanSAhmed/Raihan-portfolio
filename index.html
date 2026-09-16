@@ -76,7 +76,7 @@
 
     <!-- Main Content -->
     <main>
-<!-- Profile Section -->
+        <!-- Profile Section -->
         <section id="home" class="profile-section fade-in">
             <div class="photo-space"></div>
             <div class="profile-content">
@@ -91,7 +91,7 @@
             </div>
         </section>
 
-<!-- About Section -->
+        <!-- About Section -->
         <section id="about" class="about-section section fade-in">
             <h2 class="section-title">About Me</h2>
             <div class="about-content">
@@ -99,7 +99,7 @@
                     Hey there! I'm Raihan, a Management Information Systems student at San Jose State University specializing in Cybersecurity and Security Operations. I have a deep passion for understanding modern attack vectors, analyzing endpoint and network telemetry, and building proactive threat detection workflows.
                 </p>
                 <p>
-                    My journey in cybersecurity is driven by hands-on execution and real-world defense. From sworking and interning with the security and application performance team at Cloudflare triaging WAF, DDoS, and application security threats, to automating AI-driven phishing detection workflows at ServiceNow, I focus on converting complex security data into swift, effective threat mitigation.
+                    My journey in cybersecurity is driven by hands-on execution and real-world defense. From working and interning with the security and application performance team at Cloudflare triaging WAF, DDoS, and application security threats, to automating AI-driven phishing detection workflows at ServiceNow, I focus on converting complex security data into swift, effective threat mitigation.
                 </p>
                 <p>
                     Whether I'm investigating security incidents, writing automation scripts in Python and PowerShell, or competing in threat hunting CTFs, I am committed to continuous learning and protecting critical digital infrastructure.
@@ -107,7 +107,7 @@
             </div>
         </section>
 
-<!-- Skills Section -->
+        <!-- Skills Section -->
         <section id="skills" class="skills-section section fade-in">
             <h2 class="section-title">Skills</h2>
             <div class="skills-container">
@@ -157,7 +157,7 @@
             </div>
         </section>
 
-<!-- Certificates Section -->
+        <!-- Certificates Section -->
         <section id="certificates" class="certificates-section section fade-in">
             <h2 class="section-title">Certifications</h2>
             <div class="certificates-grid">
@@ -207,70 +207,76 @@
                 </div>
             </div>
         </section>
+
         <!-- Projects Section -->
         <section id="projects" class="projects-section section fade-in">
             <h2 class="section-title">Featured Projects</h2>
             <div class="projects-grid">
+                
+                <!-- Zero Trust & DDoS Project -->
                 <div class="project-card">
                     <div class="project-content">
                         <div class="project-header">
-                            <i class="fas fa-shield-alt"></i>
-                            <h3>Snort IDS/IPS with pfSense</h3>
+                            <i class="fas fa-user-shield"></i>
+                            <h3>Zero Trust & Layer 7 DDoS Mitigation</h3>
                         </div>
-                        <p>Implemented and configured Snort IDS/IPS on pfSense firewall for network security monitoring, threat detection, and prevention. Set up custom rules and analyzed network traffic patterns.</p>
+                        <p>Decoupled origin infrastructure using Cloudflare Tunnels, WAF rate-limiting policies, and Zero Trust OTP challenges. Validated 100% edge absorption of L7 DDoS bursts with 0 impact or attack noise on a self-hosted Ubuntu Splunk SIEM.</p>
                         <div class="project-tech">
-                            <span>Snort</span>
-                            <span>pfSense</span>
-                            <span>Network Security</span>
+                            <span>Cloudflare Tunnels</span>
+                            <span>WAF</span>
+                            <span>Zero Trust</span>
+                            <span>Splunk SIEM</span>
                         </div>
                         <div class="project-links">
-                            <a href="#" class="project-link"><i class="fas fa-file-alt"></i> Documentation</a>
-                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Demo</a>
+                            <a href="zero-trust.html" class="project-link"><i class="fas fa-file-alt"></i> View Documentation</a>
                         </div>
                     </div>
                 </div>
 
-                <div class="project-card">
+                <!-- AI-Driven SOC Automation Project (In Progress) -->
+                <div class="project-card" style="opacity: 0.85;">
                     <div class="project-content">
                         <div class="project-header">
-                            <i class="fas fa-search"></i>
-                            <h3>ELK Stack SIEM</h3>
+                            <i class="fas fa-robot"></i>
+                            <h3>AI-Driven SOC Automation Pipeline</h3>
                         </div>
-                        <p>Set up and configured ELK (Elasticsearch, Logstash, Kibana) stack for centralized log management and security analysis. Created custom dashboards for real-time monitoring and threat detection.</p>
+                        <p>Automating alert triage, initial risk scoring, and threat intelligence enrichment using LLMs integrated into SOC incident workflows.</p>
                         <div class="project-tech">
-                            <span>Elasticsearch</span>
-                            <span>Logstash</span>
-                            <span>Kibana</span>
+                            <span>Python</span>
+                            <span>AI / LLMs</span>
+                            <span>SIEM</span>
+                            <span>Automation</span>
                         </div>
                         <div class="project-links">
-                            <a href="#" class="project-link"><i class="fas fa-file-alt"></i> Documentation</a>
-                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Demo</a>
+                            <span class="project-link" style="cursor: default; opacity: 0.7;"><i class="fas fa-clock"></i> Coming Soon</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="project-card">
+                <!-- Python Security Tooling Project (In Progress) -->
+                <div class="project-card" style="opacity: 0.85;">
                     <div class="project-content">
                         <div class="project-header">
-                            <i class="fas fa-bug"></i>
-                            <h3>Honeypot Analysis</h3>
+                            <i class="fas fa-terminal"></i>
+                            <h3>Automated Threat Detection & Log Parser</h3>
                         </div>
-                        <p>Deployed and monitored honeypots to study attacker behavior, documented TTPs (Tactics, Techniques, and Procedures), and created threat intelligence reports based on collected data.</p>
+                        <p>Custom Python utility designed to parse raw authentication and web server logs, flag anomalous access patterns, and correlate IOCs automatically.</p>
                         <div class="project-tech">
-                            <span>T-Pot</span>
-                            <span>MITRE ATT&CK</span>
-                            <span>Threat Intel</span>
+                            <span>Python</span>
+                            <span>Log Parsing</span>
+                            <span>Threat Hunting</span>
+                            <span>CLI</span>
                         </div>
                         <div class="project-links">
-                            <a href="#" class="project-link"><i class="fas fa-file-alt"></i> Documentation</a>
-                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Demo</a>
+                            <span class="project-link" style="cursor: default; opacity: 0.7;"><i class="fas fa-clock"></i> Coming Soon</span>
                         </div>
                     </div>
                 </div>
+
             </div>
         </section>
     </main>
 
     <script src="script.js"></script>
 </body>
-</html> 
+</html>
