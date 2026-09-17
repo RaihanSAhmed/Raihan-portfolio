@@ -1,0 +1,5 @@
+<div class="project-card">
+    <h3>SSH Log Parser & Security Event Normalizer</h3>
+    <p>A Python automation script that parses raw Linux SSH auth logs and normalizes them into structured JSON.</p>
+    <a href="https://github.com/RaihanSAhmed/ssh-log-parser" target="_blank">View on GitHub</a>
+</div>
