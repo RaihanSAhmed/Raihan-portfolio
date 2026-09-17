@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRC AI Telemetry Pipeline - Documentation</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="particles-background"></div>
+    <canvas class="matrix-rain"></canvas>
+    <div class="cyber-grid"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-brand"><a href="index.html" style="color: inherit; text-decoration: none;">cybersec@portfolio:~$</a></div>
+        <div class="nav-links">
+            <a href="index.html">← Back to Portfolio</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="section" style="padding-top: 100px; max-width: 900px; margin: 0 auto;">
+        <h2 class="section-title">GRC AI Telemetry Pipeline</h2>
+        
+        <div class="about-content" style="background: rgba(15, 23, 42, 0.7); padding: 30px; border-radius: 12px; border: 1px solid rgba(56, 189, 248, 0.2);">
+            <p style="color: #38bdf8; font-weight: 600; margin-bottom: 20px;">
+               An agentic governance, risk, and compliance (GRC) workflow designed to ingest mock cloud security telemetry, execute dynamic Model Context Protocol (MCP) tool calls, and generate automated, NIST-aligned risk assessments.
+            </p>
+
+            <h3 style="color: #fff; margin-top: 30px; margin-bottom: 10px;">Project Overview</h3>
+            <p>
+                When building modern security infrastructure, AI agents need secure, programmatic ways to query live environment data. For this project, I engineered a lightweight, end-to-end telemetry pipeline that demonstrates how an AI assistant can safely interact with underlying infrastructure to streamline cloud risk management.
+            </p>
+
+            <h3 style="color: #fff; margin-top: 30px; margin-bottom: 10px;">Architecture & Tech Stack</h3>
+            <p>
+                <strong>Orchestration:</strong> n8n (local workflow automation)<br>
+                <strong>Protocol & Telemetry Server:</strong> Python, FastMCP, Server-Sent Events (SSE) transport<br>
+                <strong>LLM Analytical Engine:</strong> Google Gemini API<br>
+                <strong>Environment:</strong> Local Windows terminal development setup
+            </p>
+
+            <h3 style="color: #fff; margin-top: 30px; margin-bottom: 10px;">Implementation Phases</h3>
+            
+            <p><strong>Phase 1: Local FastMCP Server Setup</strong><br>
+            I began by building a local Model Context Protocol server using Python and the FastMCP framework. My goal was to create a reliable, controlled environment that could simulate cloud security telemetry on demand. By defining a custom tool called <code>fetch_cloud_telemetry</code>, I established a structured data source that mimics real-world compliance and vulnerability findings, such as unencrypted storage buckets and public internet exposure. I configured this server to run locally using Server-Sent Events, ensuring my automation platform could securely communicate with it in real time.</p>
+            
+            <div style="margin: 20px 0; text-align: center;">
+                <img src="Screenshot 2026-09-16 223742.png" alt="FastMCP Server Terminal" style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3);">
+            </div>
+
+            <p><strong>Phase 2: Orchestration and Protocol Integration</strong><br>
+            To bridge my local security telemetry with an automation workflow, I configured a local instance of n8n and utilized its native Model Context Protocol client. I established a persistent connection pointing directly to my local Python server's SSE endpoint. This layer acted as the communication bridge, allowing the system to recognize the custom telemetry tool I had programmed and query it dynamically whenever requested.</p>
+            
+            <div style="margin: 20px 0; text-align: center;">
+                <img src="Screenshot 2026-09-17 000745.png" alt="n8n Workflow Canvas" style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3);">
+            </div>
+
+            <p><strong>Phase 3: Connecting the AI Engine and Managing Workflow Logic</strong><br>
+            Next, I integrated an AI language model powered by Google Gemini to act as the analytical brain of the pipeline. Instead of manually reviewing raw security telemetry, the AI was granted secure access to call my custom local tool whenever security data was requested. During testing, I resolved prompt-loop challenges by instructing the model to act as a rigorous risk analyst: fetch the data exactly once, parse the findings, and immediately proceed to generate a structured risk assessment.</p>
+
+            <p><strong>Phase 4: Final Execution and Risk Assessment Output</strong><br>
+            With the pipeline stable, I tested the end-to-end workflow by triggering a natural language query in the chat interface. The system successfully executed the tool call, pulled the JSON telemetry data from my local server, and translated those raw findings into a comprehensive, NIST-aligned risk assessment in just about 15 seconds.</p>
+
+            <div style="margin-top: 35px; text-align: center;">
+                <a href="https://github.com/RaihanSAhmed/grc-ai-telemetry-pipeline" target="_blank" class="project-link" style="display: inline-block; padding: 10px 20px; background: #0ea5e9; color: #fff; border-radius: 6px; text-decoration: none; font-weight: 600;">
+                    <i class="fab fa-github"></i> View Source Code on GitHub
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
