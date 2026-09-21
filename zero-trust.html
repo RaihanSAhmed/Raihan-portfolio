@@ -47,9 +47,9 @@
             <!-- Project Description -->
 
             <p style="color: #38bdf8; font-weight: 600; margin-bottom: 20px;">
-                A homelab security project demonstrating outbound-only Cloudflare Tunnel
-                connectivity, Zero Trust access control, WAF rate limiting, and SIEM
-                telemetry verification for a self-hosted Splunk instance.
+                A homelab security architecture designed to isolate a self-hosted
+                Splunk instance behind Cloudflare and validate Layer 7 DDoS
+                mitigation through WAF rate limiting and SIEM telemetry analysis.
             </p>
 
 
@@ -60,23 +60,25 @@
             </h3>
 
             <p>
-                I built this project to secure a self-hosted Splunk Enterprise instance
-                running on an Ubuntu server without directly exposing the server to
+                I built this project to protect a self-hosted Splunk Enterprise
+                instance running on an Ubuntu server from direct exposure to
                 the public internet.
             </p>
 
             <p>
-                Instead of opening inbound ports on the server, I used a Cloudflare
-                Tunnel to create an outbound connection from the origin to Cloudflare.
-                I then added Cloudflare Access to require authentication before users
-                could reach the application and configured WAF rate limiting to
-                control rapid HTTP request bursts.
+                The architecture uses an outbound-only Cloudflare Tunnel to
+                isolate the origin, Cloudflare Access to enforce identity-based
+                access control, and a WAF rate-limiting policy to mitigate
+                high-volume Layer 7 HTTP traffic at the edge.
             </p>
 
             <p>
-                I then tested the setup by generating a burst of HTTP requests and
-                verifying the resulting traffic in Cloudflare Security Events and
-                Splunk.
+                The primary objective was to simulate a Layer 7 DDoS attack
+                against the public application endpoint and verify the complete
+                security pipeline: the attack reaching Cloudflare, the WAF
+                detecting and blocking the traffic, Cloudflare recording the
+                resulting security events, and Splunk confirming what traffic
+                actually reached the origin.
             </p>
 
 
@@ -90,7 +92,7 @@
                 <strong>Origin:</strong> Ubuntu server running Splunk Enterprise<br>
                 <strong>Edge:</strong> Cloudflare<br>
                 <strong>Secure Access:</strong> Cloudflare Tunnel &amp; Cloudflare Access<br>
-                <strong>Protection:</strong> Cloudflare WAF Rate Limiting<br>
+                <strong>DDoS Mitigation:</strong> Cloudflare WAF Rate Limiting<br>
                 <strong>SIEM:</strong> Splunk Enterprise<br>
                 <strong>Telemetry:</strong> <code>/var/log/auth.log</code> and <code>/var/log/cloudflared.log</code>
             </p>
@@ -109,16 +111,17 @@
                 <strong style="color: #38bdf8;">Phase 1:</strong>
                 Origin Isolation with Cloudflare Tunnel<br>
 
-                I started by connecting the Ubuntu server to Cloudflare using
-                <code>cloudflared</code>. The tunnel creates an outbound connection
-                from the server to Cloudflare instead of requiring an inbound port
-                to be exposed on the origin.
+                I connected the Ubuntu server to Cloudflare using
+                <code>cloudflared</code>. The tunnel establishes an outbound
+                connection from the origin to Cloudflare, allowing the application
+                to be published without exposing a direct inbound port on the
+                Ubuntu server.
             </p>
 
             <p>
-                This allowed the Splunk instance to be accessed through a public
-                hostname while keeping the underlying server separated from direct
-                inbound internet traffic.
+                This established the foundation for the security architecture:
+                internet traffic would first reach Cloudflare rather than directly
+                reaching the underlying Splunk host.
             </p>
 
             <div style="margin: 20px 0; text-align: center;">
@@ -136,14 +139,15 @@
                 <strong style="color: #38bdf8;">Phase 2:</strong>
                 Zero Trust Access Control<br>
 
-                Next, I configured Cloudflare Access to protect the application
-                endpoint. Unauthenticated requests were redirected to an identity
-                challenge before access to the application was granted.
+                I configured Cloudflare Access to protect the public application
+                endpoint. Unauthenticated requests were intercepted at the edge
+                and redirected to the configured identity authentication flow.
             </p>
 
             <p>
-                This added an authentication layer at the edge rather than relying
-                solely on the origin server to control access.
+                This placed identity verification in front of the application,
+                allowing the subsequent attack simulation to test the interaction
+                between Zero Trust access controls and the WAF.
             </p>
 
 
@@ -151,24 +155,35 @@
 
             <p>
                 <strong style="color: #38bdf8;">Phase 3:</strong>
-                Layer 7 Rate Limiting and Attack Simulation<br>
+                Layer 7 DDoS Attack Simulation<br>
 
-                To test the edge security controls, I generated 20 rapid HTTP requests
-                against the public application endpoint.
+                I then simulated a Layer 7 DDoS attack against the public
+                application endpoint by generating a rapid sequence of HTTP
+                requests. The purpose was to deliberately create a high-volume
+                request condition and determine whether the Cloudflare edge
+                controls would identify and mitigate the traffic before it
+                reached the origin.
             </p>
 
             <p>
-                The initial requests returned <code>HTTP 302</code> responses,
-                indicating that Cloudflare Access was redirecting unauthenticated
-                traffic to the authentication flow. As the request volume increased,
-                later requests returned <code>HTTP 429 Too Many Requests</code>,
-                showing that the configured rate-limiting rule had triggered.
+                The initial requests returned <code>HTTP 302</code> responses as
+                Cloudflare Access intercepted the unauthenticated traffic.
+                As the request volume continued, the configured WAF rate-limiting
+                threshold was reached and subsequent requests returned
+                <code>HTTP 429 Too Many Requests</code>.
+            </p>
+
+            <p>
+                This demonstrated the intended attack path: the simulated
+                malicious traffic reached the Cloudflare edge, triggered the
+                configured rate-limiting control, and was rejected before
+                continuing toward the application.
             </p>
 
             <div style="margin: 20px 0; text-align: center;">
                 <img
                     src="Screenshot 2026-09-07 184952.png"
-                    alt="Terminal showing HTTP 302 redirects and HTTP 429 responses"
+                    alt="Terminal showing HTTP 302 redirects and HTTP 429 responses during Layer 7 DDoS simulation"
                     style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3);"
                 >
             </div>
@@ -178,16 +193,19 @@
 
             <p>
                 <strong style="color: #38bdf8;">Phase 4:</strong>
-                Edge Security Event Verification<br>
+                Cloudflare Edge Mitigation &amp; Security Events<br>
 
-                After generating the request burst, I reviewed Cloudflare Security
-                Events to verify how the traffic was handled at the edge.
+                After running the attack simulation, I reviewed Cloudflare
+                Security Events to verify that the WAF had identified and
+                blocked the request traffic.
             </p>
 
             <p>
-                The dashboard showed blocked requests associated with the configured
-                rate-limiting policy. This provided a second source of evidence that
-                the edge security controls were responding to the test traffic.
+                The Security Events dashboard recorded blocked requests
+                associated with the configured rate-limiting policy. This
+                provided independent evidence from the edge that the WAF
+                mitigation was actively responding to the simulated attack
+                traffic.
             </p>
 
             <div style="margin: 20px 0; text-align: center;">
@@ -203,24 +221,28 @@
 
             <p>
                 <strong style="color: #38bdf8;">Phase 5:</strong>
-                Splunk Telemetry Verification<br>
+                Splunk Origin Telemetry Verification<br>
 
-                Finally, I verified the activity from the origin side using Splunk.
-                The Ubuntu host was configured to ingest authentication and
-                <code>cloudflared</code> logs, allowing me to compare what was visible
-                at the edge with what reached the server.
+                The final step was determining whether the attack traffic
+                actually reached the Ubuntu origin. I configured Splunk to
+                ingest host-level telemetry from
+                <code>/var/log/auth.log</code> and
+                <code>/var/log/cloudflared.log</code>.
             </p>
 
             <p>
-                I ran a Splunk search for <code>"429"</code> across the ingested
-                host logs. The search returned zero matching events, while Cloudflare
-                Security Events showed the blocked traffic at the edge.
+                I then searched the ingested telemetry for
+                <code>"429"</code>, matching the HTTP status generated during
+                the WAF mitigation test. The search returned zero matching
+                events, while Cloudflare Security Events showed the traffic
+                being blocked at the edge.
             </p>
 
             <p>
-                This demonstrated that the tested rate-limited requests were being
-                handled by the Cloudflare security layer without corresponding
-                <code>429</code> events appearing in the host-level telemetry.
+                Comparing the two telemetry sources provided evidence that the
+                rate-limited attack traffic was handled by Cloudflare before
+                corresponding <code>429</code> events appeared in the
+                origin-side logs.
             </p>
 
             <div style="margin: 20px 0; text-align: center;">
@@ -239,17 +261,20 @@
             </h3>
 
             <p>
-                This project demonstrates how multiple security controls can work
-                together at different layers of an application environment.
-                Cloudflare Tunnel isolates the origin, Cloudflare Access provides
-                identity-based access control, and WAF rate limiting helps control
-                high-volume HTTP traffic before it reaches the application.
+                This project demonstrates a layered approach to defending a
+                self-hosted security infrastructure environment. Cloudflare
+                Tunnel isolates the origin from direct inbound exposure,
+                Cloudflare Access adds identity-based access control, and WAF
+                rate limiting provides an edge control for high-volume
+                application-layer traffic.
             </p>
 
             <p>
-                The Splunk integration also provided a way to verify the difference
-                between traffic observed at the edge and telemetry generated by
-                the origin server.
+                The DDoS simulation also demonstrates the value of correlating
+                edge and host telemetry. Cloudflare provided visibility into
+                the attack and mitigation activity, while Splunk was used to
+                determine whether corresponding traffic appeared in the
+                origin environment.
             </p>
 
 
@@ -257,17 +282,25 @@
 
             <div style="margin: 25px 0; text-align: center;">
 
-                <pre style="text-align: left; overflow-x: auto; padding: 20px; background: rgba(0, 0, 0, 0.35); border-radius: 8px;"><code>Internet Traffic
+                <pre style="text-align: left; overflow-x: auto; padding: 20px; background: rgba(0, 0, 0, 0.35); border-radius: 8px;"><code>Layer 7 DDoS Traffic
        ↓
 Cloudflare Edge
        ↓
-Access Authentication
+Cloudflare Access
        ↓
 WAF Rate Limiting
        ↓
+Blocked / HTTP 429
+       ↓
+Cloudflare Security Events
+       
+Allowed Traffic
+       ↓
 Cloudflare Tunnel
        ↓
-Ubuntu / Splunk</code></pre>
+Ubuntu / Splunk
+       ↓
+Origin Telemetry Verification</code></pre>
 
             </div>
 
@@ -275,9 +308,10 @@ Ubuntu / Splunk</code></pre>
             <!-- GitHub Note -->
 
             <p style="margin-top: 30px;">
-                This project was built as a hands-on homelab implementation using
-                Cloudflare and Splunk. The documentation focuses on the architecture,
-                testing process, and telemetry verification.
+                This project was built as a hands-on security homelab to
+                demonstrate Zero Trust architecture, Layer 7 DDoS mitigation,
+                edge security monitoring, and SIEM-based verification using
+                Cloudflare and Splunk.
             </p>
 
 
