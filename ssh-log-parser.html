@@ -1,1 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSH Log Parser | Raihan Ahmed</title>
 
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">RAIHAN<span>_</span></a>
+
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#about">About</a>
+                <a href="index.html#skills">Skills</a>
+                <a href="index.html#certifications">Certifications</a>
+                <a href="index.html#projects">Projects</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="project-page">
+
+        <section class="project-header">
+            <p class="project-label">// PROJECT 01</p>
+
+            <h1>SSH Log Parser &amp; Security Event Normalizer</h1>
+
+            <p class="project-description">
+                A Python automation script designed to parse raw, unstructured Linux SSH
+                authentication logs and normalize them into structured JSON security events.
+            </p>
+
+            <div class="project-links">
+                <a href="https://github.com/RaihanSAhmed/ssh-log-parser"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="project-btn">
+                    GitHub Repository ↗
+                </a>
+
+                <a href="index.html#projects" class="project-btn secondary">
+                    ← Back to Projects
+                </a>
+            </div>
+        </section>
+
+
+        <section class="project-content">
+
+            <div class="project-section">
+                <h2>01 // Overview</h2>
+
+                <p>
+                    Security systems frequently ingest large amounts of raw log data.
+                    Linux SSH authentication logs contain useful security information,
+                    but their unstructured format can make automated analysis more difficult.
+                </p>
+
+                <p>
+                    This project uses Python to identify failed SSH authentication attempts,
+                    extract important fields such as usernames and source IP addresses,
+                    and convert the events into structured JSON data.
+                </p>
+            </div>
+
+
+            <div class="project-section">
+                <h2>02 // How It Works</h2>
+
+                <div class="workflow-grid">
+
+                    <div class="workflow-card">
+                        <span>01</span>
+                        <h3>Read Logs</h3>
+                        <p>
+                            Reads the raw SSH authentication log line by line.
+                        </p>
+                    </div>
+
+                    <div class="workflow-card">
+                        <span>02</span>
+                        <h3>Filter Events</h3>
+                        <p>
+                            Searches for failed SSH authentication attempts and filters
+                            unrelated log activity.
+                        </p>
+                    </div>
+
+                    <div class="workflow-card">
+                        <span>03</span>
+                        <h3>Extract Data</h3>
+                        <p>
+                            Extracts timestamps, usernames, event types, and source IP addresses.
+                        </p>
+                    </div>
+
+                    <div class="workflow-card">
+                        <span>04</span>
+                        <h3>Normalize</h3>
+                        <p>
+                            Converts the extracted information into structured JSON.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="project-section">
+                <h2>03 // Technologies</h2>
+
+                <div class="tech-list">
+                    <span>Python 3</span>
+                    <span>JSON</span>
+                    <span>Linux SSH Logs</span>
+                    <span>String Parsing</span>
+                    <span>File I/O</span>
+                </div>
+            </div>
+
+
+            <div class="project-section">
+                <h2>04 // Project Structure</h2>
+
+                <pre><code>ssh-log-parser/
+│
+├── logs/
+│   └── sample_auth.log
+├── parser.py
+├── output.json
+└── README.md</code></pre>
+            </div>
+
+
+            <div class="project-section">
+                <h2>05 // Sample Output</h2>
+
+                <pre><code>[
+    {
+        "timestamp": "Sep 17 04:15:22",
+        "event": "Failed SSH Login",
+        "user": "admin",
+        "source_ip": "192.168.1.50"
+    }
+]</code></pre>
+            </div>
+
+
+            <div class="project-section">
+                <h2>06 // Screenshots</h2>
+
+                <div class="project-screenshot">
+                    <p class="screenshot-placeholder">
+                        Screenshot coming soon.
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="project-section">
+                <h2>07 // Key Takeaways</h2>
+
+                <ul class="takeaways">
+                    <li>Practiced Python string manipulation and file I/O.</li>
+                    <li>Built a basic log parsing and normalization workflow.</li>
+                    <li>Extracted security-relevant information from raw authentication logs.</li>
+                    <li>Created structured telemetry that could be consumed by security tooling.</li>
+                </ul>
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>
