@@ -3,381 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSH Log Parser | Raihan Ahmed</title>
+    <title>SSH Log Parser - Documentation</title>
 
     <link rel="stylesheet" href="styles.css">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
-
-    <style>
-        .code-block {
-            margin-top: 20px;
-            overflow-x: auto;
-            border-radius: 8px;
-        }
-
-        .code-block pre {
-            margin: 0;
-            padding: 24px;
-            line-height: 1.6;
-            font-size: 0.9rem;
-        }
-
-        .project-screenshot {
-            margin-top: 24px;
-            padding: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            background: rgba(0, 0, 0, 0.2);
-        }
-
-        .project-screenshot img {
-            display: block;
-            width: 100%;
-            height: auto;
-            border-radius: 6px;
-        }
-
-        .screenshot-caption {
-            margin: 12px 4px 0;
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
-
-        .implementation-note {
-            margin-bottom: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">RAIHAN<span>_</span></a>
+    <!-- Background Effects -->
+    <div class="particles-background"></div>
+    <canvas class="matrix-rain"></canvas>
+    <div class="cyber-grid"></div>
 
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="index.html#about">About</a>
-                <a href="index.html#skills">Skills</a>
-                <a href="index.html#certifications">Certifications</a>
-                <a href="index.html#projects">Projects</a>
-            </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a href="index.html" style="color: inherit; text-decoration: none;">
+                cybersec@portfolio:~$
+            </a>
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html">← Back to Portfolio</a>
         </div>
     </nav>
 
 
-    <main class="project-page">
+    <!-- Main Content -->
+    <main class="section" style="padding-top: 100px; max-width: 900px; margin: 0 auto; height: calc(100vh - 100px); overflow-y: auto; padding-bottom: 50px;">
 
-        <section class="project-header">
+        <h2 class="section-title">
+            SSH Log Parser &amp; Security Event Normalizer
+        </h2>
 
-            <h1>SSH Log Parser &amp; Security Event Normalizer</h1>
 
-            <p class="project-description">
-                A Python automation project that takes raw Linux SSH authentication logs,
+        <div class="about-content" style="background: rgba(15, 23, 42, 0.7); padding: 30px; border-radius: 12px; border: 1px solid rgba(56, 189, 248, 0.2); margin-bottom: 50px;">
+
+
+            <!-- Project Description -->
+
+            <p style="color: #38bdf8; font-weight: 600; margin-bottom: 20px;">
+                A Python automation script that parses raw Linux SSH authentication logs,
                 identifies failed login attempts, and converts them into structured JSON
-                events that are easier to analyze.
+                security events.
             </p>
 
-            <div class="project-links">
 
-                <a href="https://github.com/RaihanSAhmed/ssh-log-parser"
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   class="project-btn">
-                    GitHub Repository ↗
-                </a>
+            <!-- Project Overview -->
 
-                <a href="index.html#projects" class="project-btn secondary">
-                    ← Back to Projects
-                </a>
+            <h3 style="color: #fff; margin-top: 30px; margin-bottom: 10px;">
+                Project Overview
+            </h3>
 
-            </div>
+            <p>
+                SSH authentication logs contain useful security information such as
+                login timestamps, usernames, and source IP addresses. However, this
+                information is stored as raw text, which makes it harder to process
+                automatically.
+            </p>
 
-        </section>
+            <p>
+                I built this project to automate the first step of analyzing these logs.
+                The Python script searches for failed SSH authentication attempts,
+                extracts the relevant information, and converts each event into a
+                consistent JSON structure.
+            </p>
 
-
-        <section class="project-content">
-
-
-            <!-- OVERVIEW -->
-
-            <div class="project-section">
-
-                <h2>01 Overview</h2>
-
-                <p>
-                    Linux SSH authentication logs contain useful security information,
-                    such as when a login attempt occurred, which username was targeted,
-                    and where the connection came from. The problem is that this
-                    information is stored as raw text rather than structured fields.
-                </p>
-
-                <p>
-                    I built this project to automate the first step of analyzing those
-                    logs. Instead of manually searching through each line, the Python
-                    script identifies failed SSH login attempts and extracts the pieces
-                    of information that matter.
-                </p>
-
-                <p>
-                    The extracted data is then converted into JSON, creating a cleaner
-                    format that can be used for further analysis or passed into other
-                    security tooling.
-                </p>
-
-            </div>
+            <p>
+                This creates a simple example of how raw security telemetry can be
+                transformed into structured data for further analysis or use in
+                security tooling.
+            </p>
 
 
-            <!-- PROBLEM -->
+            <!-- Architecture & Tech Stack -->
 
-            <div class="project-section">
+            <h3 style="color: #fff; margin-top: 30px; margin-bottom: 10px;">
+                Architecture &amp; Tech Stack
+            </h3>
 
-                <h2>02 The Problem</h2>
+            <p>
+                <strong>Language:</strong> Python 3<br>
+                <strong>Input:</strong> Linux SSH authentication logs<br>
+                <strong>Output:</strong> JSON<br>
+                <strong>Techniques:</strong> String parsing, file I/O, data normalization
+            </p>
 
-                <p>
-                    A typical SSH authentication log contains many different events.
-                    When investigating failed logins, a security analyst may need to
-                    search through the raw text to find relevant entries and manually
-                    identify the username and source IP associated with each attempt.
-                </p>
 
-                <p>
-                    For example, a raw entry might look like this:
-                </p>
+            <!-- Implementation Phases -->
 
-                <div class="code-block">
+            <h3 style="color: #fff; margin-top: 30px; margin-bottom: 10px;">
+                Implementation Phases
+            </h3>
 
-<pre><code>Sep 17 04:15:22 server sshd[1234]: Failed password for admin from 192.168.1.50 port 22 ssh2</code></pre>
 
-                </div>
+            <!-- Phase 1 -->
 
-                <p>
-                    The useful security information is there, but it is embedded inside
-                    an unstructured sentence. The goal of this project is to turn that
-                    information into fields that a program can easily work with.
-                </p>
+            <p>
+                <strong style="color: #38bdf8;">Phase 1:</strong>
+                Log Input and Event Filtering<br>
 
+                I started with a sample Linux SSH authentication log containing
+                different login attempts. Rather than manually searching through
+                the entire file, the Python script reads the log line by line and
+                looks specifically for entries containing
+                <code>Failed password</code>.
+            </p>
+
+            <div style="margin: 20px 0; text-align: center;">
+                <img
+                    src="ssh-raw-log.png"
+                    alt="Raw SSH authentication log"
+                    style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3);"
+                >
             </div>
 
 
-            <!-- WORKFLOW -->
+            <!-- Phase 2 -->
 
-            <div class="project-section">
+            <p>
+                <strong style="color: #38bdf8;">Phase 2:</strong>
+                Parsing the Log Data<br>
 
-                <h2>03 How It Works</h2>
+                Once a failed authentication event is identified, the script
+                splits the log entry into individual fields. It extracts the
+                timestamp, username, and source IP address from the original
+                log line.
+            </p>
 
-                <div class="workflow-grid">
-
-                    <div class="workflow-card">
-                        <span>01</span>
-                        <h3>Read Logs</h3>
-                        <p>
-                            Python opens the SSH authentication log and processes it
-                            one line at a time.
-                        </p>
-                    </div>
-
-                    <div class="workflow-card">
-                        <span>02</span>
-                        <h3>Filter Events</h3>
-                        <p>
-                            The script looks for the
-                            <code>Failed password</code> pattern to identify failed
-                            SSH authentication attempts.
-                        </p>
-                    </div>
-
-                    <div class="workflow-card">
-                        <span>03</span>
-                        <h3>Extract Data</h3>
-                        <p>
-                            It extracts the timestamp, username, and source IP
-                            from each matching log entry.
-                        </p>
-                    </div>
-
-                    <div class="workflow-card">
-                        <span>04</span>
-                        <h3>Normalize</h3>
-                        <p>
-                            The extracted values are stored in a consistent structure
-                            and written to a JSON file.
-                        </p>
-                    </div>
-
-                </div>
-
-            </div>
+            <p>
+                I also accounted for a second SSH log format involving an
+                <code>invalid user</code>. The parser checks for this case and
+                adjusts how it locates the username so both types of failed
+                authentication events can be processed.
+            </p>
 
 
-            <!-- RAW LOG -->
+            <!-- Phase 3 -->
 
-            <div class="project-section">
+            <p>
+                <strong style="color: #38bdf8;">Phase 3:</strong>
+                Security Event Normalization<br>
 
-                <h2>04 Raw Log Input</h2>
+                After extracting the relevant fields, the script stores them
+                in a Python dictionary using a consistent structure. Each event
+                contains the timestamp, event type, username, and source IP address.
+            </p>
 
-                <p>
-                    The parser starts with a sample SSH authentication log containing
-                    different login attempts. The script does not need to process every
-                    line because it is specifically looking for failed password events.
-                </p>
+            <div style="margin: 20px 0; text-align: center;">
 
-                <div class="project-screenshot">
-
-                    <img src="ssh-raw-log.png"
-                         alt="Raw Linux SSH authentication log">
-
-                    <p class="screenshot-caption">
-                        Sample SSH authentication log used as the input for the parser.
-                    </p>
-
-                </div>
-
-                <p>
-                    When the parser encounters a line containing
-                    <code>Failed password</code>, it processes that line and extracts
-                    the relevant fields.
-                </p>
-
-            </div>
-
-
-            <!-- CODE -->
-
-            <div class="project-section">
-
-                <h2>05 Python Implementation</h2>
-
-                <p class="implementation-note">
-                    The parser uses Python's built-in file handling, string manipulation,
-                    and JSON functionality. The main idea is simple: find the events
-                    we care about, pull out the useful fields, and save them in a
-                    structured format.
-                </p>
-
-                <div class="code-block">
-
-<pre><code>import json
-
-# Define the input log and output JSON file
-log_file_path = "logs\\sample_auth.log"
-output_file_path = "output.json"
-
-# Store parsed security events
-parsed_logs = []
-
-# Read the log file line by line
-with open(log_file_path, "r") as file:
-    for line in file:
-
-        # Only process failed SSH login attempts
-        if "Failed password" in line:
-
-            # Split the log line into individual words
-            words = line.split()
-
-            # Extract the timestamp
-            timestamp = f"{words[0]} {words[1]} {words[2]}"
-
-            # Extract the username
-            if "invalid user" in line:
-                user = words[words.index("user") + 1]
-            else:
-                user = words[words.index("for") + 1]
-
-            # Extract the source IP address
-            ip = words[words.index("from") + 1]
-
-            # Create a structured security event
-            log_entry = {
-                "timestamp": timestamp,
-                "event": "Failed SSH Login",
-                "user": user,
-                "source_ip": ip
-            }
-
-            parsed_logs.append(log_entry)
-
-# Write the structured events to JSON
-with open(output_file_path, "w") as outfile:
-    json.dump(parsed_logs, outfile, indent=4)
-
-print(f"[+] Success! Parsed {len(parsed_logs)} events and saved to {output_file_path}")</code></pre>
-
-                </div>
-
-                <p>
-                    One detail I accounted for is the difference between a normal failed
-                    login and an attempt against a username that does not exist. The
-                    parser checks for <code>invalid user</code> and adjusts where it
-                    looks for the username so both formats can be processed.
-                </p>
-
-            </div>
-
-
-            <!-- JSON OUTPUT -->
-
-            <div class="project-section">
-
-                <h2>06 Structured Output</h2>
-
-                <p>
-                    Instead of leaving the information inside the original log line,
-                    the parser creates a structured event with separate fields for the
-                    timestamp, event type, username, and source IP address.
-                </p>
-
-                <div class="code-block">
-
-<pre><code>{
+                <pre style="text-align: left; overflow-x: auto; padding: 20px; background: rgba(0, 0, 0, 0.35); border-radius: 8px;"><code>{
     "timestamp": "Sep 17 04:15:22",
     "event": "Failed SSH Login",
     "user": "admin",
     "source_ip": "192.168.1.50"
 }</code></pre>
 
-                </div>
-
-                <div class="project-screenshot">
-
-                    <img src="ssh-json-output.png"
-                         alt="Structured JSON output generated by the SSH log parser">
-
-                    <p class="screenshot-caption">
-                        Structured JSON output generated from the raw SSH authentication logs.
-                    </p>
-
-                </div>
-
             </div>
 
 
-            <!-- SECURITY RELEVANCE -->
+            <!-- Phase 4 -->
 
-            <div class="project-section">
+            <p>
+                <strong style="color: #38bdf8;">Phase 4:</strong>
+                JSON Output<br>
 
-                <h2>07 Security Relevance</h2>
+                Finally, the parsed events are written to
+                <code>output.json</code> using Python's built-in JSON module.
+                This transforms the original unstructured log data into a format
+                that is easier for other programs and security tools to process.
+            </p>
 
-                <p>
-                    Repeated failed SSH authentication attempts can be an important
-                    part of investigating unauthorized access or potential brute-force
-                    activity.
-                </p>
+            <div style="margin: 20px 0; text-align: center;">
+                <img
+                    src="ssh-json-output.png"
+                    alt="Structured JSON output generated by the SSH log parser"
+                    style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3);"
+                >
+            </div>
 
-                <p>
-                    In a larger security environment, this type of parsing can serve
-                    as an early step in a telemetry pipeline. Raw logs are converted
-                    into structured events first, making the information easier for
-                    security tools and analysts to search, correlate, and investigate.
-                </p>
 
-                <div class="code-block">
+            <!-- Security Relevance -->
 
-<pre><code>Raw SSH Log
+            <h3 style="color: #fff; margin-top: 30px; margin-bottom: 10px;">
+                Security Relevance
+            </h3>
+
+            <p>
+                Failed SSH authentication attempts can be useful when investigating
+                unauthorized access or potential brute-force activity. Converting
+                raw authentication logs into structured events makes the information
+                easier to search, analyze, and correlate.
+            </p>
+
+            <p>
+                While this project is intentionally lightweight, the workflow represents
+                a basic security telemetry pipeline:
+            </p>
+
+            <div style="margin: 20px 0; text-align: center;">
+
+                <pre style="text-align: left; overflow-x: auto; padding: 20px; background: rgba(0, 0, 0, 0.35); border-radius: 8px;"><code>Raw SSH Logs
      ↓
 Python Parser
      ↓
@@ -387,51 +217,33 @@ Field Extraction
      ↓
 Structured JSON
      ↓
-Security Analysis / SIEM</code></pre>
-
-                </div>
+Security Analysis</code></pre>
 
             </div>
 
 
-            <!-- TAKEAWAYS -->
+            <!-- GitHub -->
 
-            <div class="project-section">
+            <div style="margin-top: 35px; text-align: center;">
 
-                <h2>08 What I Learned</h2>
-
-                <ul class="takeaways">
-
-                    <li>
-                        Learned how Python can automate repetitive security log analysis.
-                    </li>
-
-                    <li>
-                        Practiced reading files and processing log data line by line.
-                    </li>
-
-                    <li>
-                        Used string parsing to extract specific fields from unstructured data.
-                    </li>
-
-                    <li>
-                        Learned how raw security telemetry can be normalized into
-                        a structured format.
-                    </li>
-
-                    <li>
-                        Built a foundation for larger security automation and
-                        detection-engineering projects.
-                    </li>
-
-                </ul>
+                <a
+                    href="https://github.com/RaihanSAhmed/ssh-log-parser"
+                    target="_blank"
+                    class="project-link"
+                    style="display: inline-block; padding: 10px 20px; background: #0ea5e9; color: #fff; border-radius: 6px; text-decoration: none; font-weight: 600;"
+                >
+                    <i class="fab fa-github"></i>
+                    View Source Code on GitHub
+                </a>
 
             </div>
 
-
-        </section>
+        </div>
 
     </main>
+
+
+    <script src="script.js"></script>
 
 </body>
 </html>
