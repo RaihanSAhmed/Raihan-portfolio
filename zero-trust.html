@@ -1,148 +1,292 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zero Trust Architecture & Layer 7 DDoS Mitigation — Raihan Ahmed</title>
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    .project-container {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      line-height: 1.6;
-      color: #333;
-    }
-    .back-link {
-      display: inline-block;
-      margin-bottom: 24px;
-      color: #0066cc;
-      text-decoration: none;
-      font-weight: 500;
-    }
-    .back-link:hover {
-      text-decoration: underline;
-    }
-    .project-header {
-      border-bottom: 2px solid #eaeaea;
-      padding-bottom: 16px;
-      margin-bottom: 32px;
-    }
-    .project-header h1 {
-      font-size: 2.25rem;
-      margin-bottom: 8px;
-    }
-    .project-section {
-      margin-bottom: 40px;
-    }
-    .project-section h2 {
-      font-size: 1.5rem;
-      color: #111;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 6px;
-      margin-bottom: 16px;
-    }
-    .screenshot-card {
-      margin: 24px 0;
-      background: #fafafa;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      padding: 16px;
-    }
-    .screenshot-card img {
-      width: 100%;
-      height: auto;
-      border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-    .screenshot-caption {
-      margin-top: 10px;
-      font-size: 0.9rem;
-      color: #666;
-      font-style: italic;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero Trust Architecture & Layer 7 DDoS Mitigation - Documentation</title>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
-  <div class="project-container">
-    <a href="index.html" class="back-link">← Back to Portfolio</a>
+    <!-- Background Effects -->
+    <div class="particles-background"></div>
+    <canvas class="matrix-rain"></canvas>
+    <div class="cyber-grid"></div>
 
-    <header class="project-header">
-      <h1>Zero Trust Architecture & Layer 7 DDoS Mitigation for Self-Hosted SIEM</h1>
-      <p class="subtitle">Edge Isolation, WAF Rate Limiting, & Splunk SIEM Telemetry Verification</p>
-    </header>
 
-    <!-- Section 1 -->
-    <section class="project-section">
-      <h2>1. Executive Summary & Technical Impact</h2>
-      <p>
-        This project demonstrates edge isolation, Zero Trust access control, and Layer 7 DDoS mitigation for my homelab Ubuntu-hosted Splunk Enterprise SIEM instance. By leveraging an outbound-only Cloudflare Tunnel (<code>cloudflared</code>), the origin server's public IP address and inbound ports remain completely unexposed to the public internet.
-      </p>
-      <p>
-        To defend against volumetric and application-layer threats, I used a dual-layer edge defense strategy using a Cloudflare WAF Rate Limiting Policy and Cloudflare Access (Zero Trust OTP). The architecture was tested using a Layer 7 DDoS burst. Splunk host telemetry verified 100% origin server isolation, absorbing all attack traffic at Cloudflare's edge while maintaining real-time host syslog ingestion (<code>/var/log/auth.log</code> and <code>/var/log/cloudflared.log</code>).
-      </p>
-      <p>
-        I decoupled origin infrastructure from the public internet via outbound-only Cloudflare Tunnels, absorbing 100% of Layer 7 DDoS traffic and enforcing Zero Trust identity challenges at the edge, ensuring zero performance impact or attack log pollution on the self-hosted Splunk SIEM.
-      </p>
-      
-      <div class="screenshot-card">
-        <img src="Screenshot 2026-09-07 184740.png" alt="Cloudflare Tunnel and Zero Trust Configuration">
-        <p class="screenshot-caption">Figure 1: Cloudflare Tunnel routing configuration and edge access policies isolating the Ubuntu origin host.</p>
-      </div>
-    </section>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a href="index.html" style="color: inherit; text-decoration: none;">
+                cybersec@portfolio:~$
+            </a>
+        </div>
 
-    <!-- Section 2 -->
-    <section class="project-section">
-      <h2>2. Testing & Attack Simulation</h2>
-      <p>
-        I simulated a Layer 7 DDoS burst using a terminal script to fire 20 rapid HTTP requests at the public application endpoint. The initial requests (1 through 11) returned <code>HTTP 302</code> status codes, confirming that Cloudflare Access intercepted the unauthenticated traffic and redirected it to the Zero Trust OTP login challenge.
-      </p>
-      <p>
-        As the request volume rapidly increased, requests 12 through 20 breached the threshold and were immediately dropped at the edge with <code>HTTP 429 Too Many Requests</code> status codes. This verified that the rate-limiting policy successfully triggered before the burst could overwhelm the authentication engine or reach the underlying tunnel.
-      </p>
+        <div class="nav-links">
+            <a href="index.html">← Back to Portfolio</a>
+        </div>
+    </nav>
 
-      <div class="screenshot-card">
-        <img src="Screenshot 2026-09-07 184952.png" alt="Terminal output showing HTTP 302 redirects and HTTP 429 rate limit responses">
-        <p class="screenshot-caption">Figure 2: Terminal execution log displaying initial HTTP 302 redirects to Zero Trust OTP followed by HTTP 429 edge blocks.</p>
-      </div>
-    </section>
 
-    <!-- Section 3 -->
-    <section class="project-section">
-      <h2>3. Perimeter WAF Analytics</h2>
-      <p>
-        Inside the Cloudflare Security Events dashboard, real-time analytics confirmed that the edge security layer properly classified and mitigated the attack. The logs record explicit <code>Block</code> actions for incoming traffic, directly attributing the mitigation to the configured rate-limiting rule.
-      </p>
-      <p>
-        By logging source IP details and enforcing drop actions at Cloudflare's edge, malicious request bursts were fully absorbed before ever entering the <code>cloudflared</code> tunnel, keeping origin network traffic and host completely unaffected.
-      </p>
+    <!-- Main Content -->
+    <main class="section" style="padding-top: 100px; max-width: 900px; margin: 0 auto; height: calc(100vh - 100px); overflow-y: auto; padding-bottom: 50px;">
 
-      <div class="screenshot-card">
-        <img src="Screenshot 2026-09-07 203556.png" alt="Cloudflare Security Events Dashboard displaying mitigated attack traffic">
-        <p class="screenshot-caption">Figure 3: Cloudflare Security Events analytics showing edge drop actions attributed to WAF rate-limiting rules.</p>
-      </div>
-    </section>
+        <h2 class="section-title">
+            Zero Trust Architecture &amp; Layer 7 DDoS Mitigation
+        </h2>
 
-    <!-- Section 4 -->
-    <section class="project-section">
-      <h2>4. Origin Isolation & SIEM Telemetry Verification</h2>
-      <p>
-        To confirm active syslog ingestion on the host, I configured Splunk file monitor inputs targeting <code>/var/log/auth.log</code> for OS authentication events and <code>/var/log/cloudflared.log</code> for tunnel proxy status. Running a structured SPL query verified that host-level telemetry was streaming into Splunk in real time without disruption.
-      </p>
-      <p>
-        To validate total origin isolation, I executed a targeted SPL query searching for <code>"429"</code> block events across all ingested syslogs. The query returned 0 events, proving that 100% of the DDoS attack traffic was absorbed at Cloudflare’s edge. This confirmed complete origin isolation with no attack noise, bad HTTP traffic, or compute overhead ever reached the underlying Ubuntu server or polluted the SIEM indexes.
-      </p>
 
-      <div class="screenshot-card">
-        <img src="Screenshot 2026-09-07 203631.png" alt="Splunk Enterprise SPL query returning 0 events for HTTP 429 errors">
-        <p class="screenshot-caption">Figure 4: Splunk Enterprise SPL search verifying 0 attack log entries reached host syslogs, confirming 100% edge absorption.</p>
-      </div>
-    </section>
+        <div class="about-content" style="background: rgba(15, 23, 42, 0.7); padding: 30px; border-radius: 12px; border: 1px solid rgba(56, 189, 248, 0.2); margin-bottom: 50px;">
 
-    <a href="index.html" class="back-link">← Back to Portfolio</a>
-  </div>
+
+            <!-- Project Description -->
+
+            <p style="color: #38bdf8; font-weight: 600; margin-bottom: 20px;">
+                A homelab security project demonstrating outbound-only Cloudflare Tunnel
+                connectivity, Zero Trust access control, WAF rate limiting, and SIEM
+                telemetry verification for a self-hosted Splunk instance.
+            </p>
+
+
+            <!-- Project Overview -->
+
+            <h3 style="color: #fff; margin-top: 30px; margin-bottom: 10px;">
+                Project Overview
+            </h3>
+
+            <p>
+                I built this project to secure a self-hosted Splunk Enterprise instance
+                running on an Ubuntu server without directly exposing the server to
+                the public internet.
+            </p>
+
+            <p>
+                Instead of opening inbound ports on the server, I used a Cloudflare
+                Tunnel to create an outbound connection from the origin to Cloudflare.
+                I then added Cloudflare Access to require authentication before users
+                could reach the application and configured WAF rate limiting to
+                control rapid HTTP request bursts.
+            </p>
+
+            <p>
+                I then tested the setup by generating a burst of HTTP requests and
+                verifying the resulting traffic in Cloudflare Security Events and
+                Splunk.
+            </p>
+
+
+            <!-- Architecture & Tech Stack -->
+
+            <h3 style="color: #fff; margin-top: 30px; margin-bottom: 10px;">
+                Architecture &amp; Tech Stack
+            </h3>
+
+            <p>
+                <strong>Origin:</strong> Ubuntu server running Splunk Enterprise<br>
+                <strong>Edge:</strong> Cloudflare<br>
+                <strong>Secure Access:</strong> Cloudflare Tunnel &amp; Cloudflare Access<br>
+                <strong>Protection:</strong> Cloudflare WAF Rate Limiting<br>
+                <strong>SIEM:</strong> Splunk Enterprise<br>
+                <strong>Telemetry:</strong> <code>/var/log/auth.log</code> and <code>/var/log/cloudflared.log</code>
+            </p>
+
+
+            <!-- Implementation Phases -->
+
+            <h3 style="color: #fff; margin-top: 30px; margin-bottom: 10px;">
+                Implementation Phases
+            </h3>
+
+
+            <!-- Phase 1 -->
+
+            <p>
+                <strong style="color: #38bdf8;">Phase 1:</strong>
+                Origin Isolation with Cloudflare Tunnel<br>
+
+                I started by connecting the Ubuntu server to Cloudflare using
+                <code>cloudflared</code>. The tunnel creates an outbound connection
+                from the server to Cloudflare instead of requiring an inbound port
+                to be exposed on the origin.
+            </p>
+
+            <p>
+                This allowed the Splunk instance to be accessed through a public
+                hostname while keeping the underlying server separated from direct
+                inbound internet traffic.
+            </p>
+
+            <div style="margin: 20px 0; text-align: center;">
+                <img
+                    src="Screenshot 2026-09-07 184740.png"
+                    alt="Cloudflare Tunnel and Zero Trust configuration"
+                    style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3);"
+                >
+            </div>
+
+
+            <!-- Phase 2 -->
+
+            <p>
+                <strong style="color: #38bdf8;">Phase 2:</strong>
+                Zero Trust Access Control<br>
+
+                Next, I configured Cloudflare Access to protect the application
+                endpoint. Unauthenticated requests were redirected to an identity
+                challenge before access to the application was granted.
+            </p>
+
+            <p>
+                This added an authentication layer at the edge rather than relying
+                solely on the origin server to control access.
+            </p>
+
+
+            <!-- Phase 3 -->
+
+            <p>
+                <strong style="color: #38bdf8;">Phase 3:</strong>
+                Layer 7 Rate Limiting and Attack Simulation<br>
+
+                To test the edge security controls, I generated 20 rapid HTTP requests
+                against the public application endpoint.
+            </p>
+
+            <p>
+                The initial requests returned <code>HTTP 302</code> responses,
+                indicating that Cloudflare Access was redirecting unauthenticated
+                traffic to the authentication flow. As the request volume increased,
+                later requests returned <code>HTTP 429 Too Many Requests</code>,
+                showing that the configured rate-limiting rule had triggered.
+            </p>
+
+            <div style="margin: 20px 0; text-align: center;">
+                <img
+                    src="Screenshot 2026-09-07 184952.png"
+                    alt="Terminal showing HTTP 302 redirects and HTTP 429 responses"
+                    style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3);"
+                >
+            </div>
+
+
+            <!-- Phase 4 -->
+
+            <p>
+                <strong style="color: #38bdf8;">Phase 4:</strong>
+                Edge Security Event Verification<br>
+
+                After generating the request burst, I reviewed Cloudflare Security
+                Events to verify how the traffic was handled at the edge.
+            </p>
+
+            <p>
+                The dashboard showed blocked requests associated with the configured
+                rate-limiting policy. This provided a second source of evidence that
+                the edge security controls were responding to the test traffic.
+            </p>
+
+            <div style="margin: 20px 0; text-align: center;">
+                <img
+                    src="Screenshot 2026-09-07 203556.png"
+                    alt="Cloudflare Security Events showing blocked traffic"
+                    style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3);"
+                >
+            </div>
+
+
+            <!-- Phase 5 -->
+
+            <p>
+                <strong style="color: #38bdf8;">Phase 5:</strong>
+                Splunk Telemetry Verification<br>
+
+                Finally, I verified the activity from the origin side using Splunk.
+                The Ubuntu host was configured to ingest authentication and
+                <code>cloudflared</code> logs, allowing me to compare what was visible
+                at the edge with what reached the server.
+            </p>
+
+            <p>
+                I ran a Splunk search for <code>"429"</code> across the ingested
+                host logs. The search returned zero matching events, while Cloudflare
+                Security Events showed the blocked traffic at the edge.
+            </p>
+
+            <p>
+                This demonstrated that the tested rate-limited requests were being
+                handled by the Cloudflare security layer without corresponding
+                <code>429</code> events appearing in the host-level telemetry.
+            </p>
+
+            <div style="margin: 20px 0; text-align: center;">
+                <img
+                    src="Screenshot 2026-09-07 203631.png"
+                    alt="Splunk search showing zero 429 events"
+                    style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3);"
+                >
+            </div>
+
+
+            <!-- Security Relevance -->
+
+            <h3 style="color: #fff; margin-top: 30px; margin-bottom: 10px;">
+                Security Relevance
+            </h3>
+
+            <p>
+                This project demonstrates how multiple security controls can work
+                together at different layers of an application environment.
+                Cloudflare Tunnel isolates the origin, Cloudflare Access provides
+                identity-based access control, and WAF rate limiting helps control
+                high-volume HTTP traffic before it reaches the application.
+            </p>
+
+            <p>
+                The Splunk integration also provided a way to verify the difference
+                between traffic observed at the edge and telemetry generated by
+                the origin server.
+            </p>
+
+
+            <!-- Architecture Flow -->
+
+            <div style="margin: 25px 0; text-align: center;">
+
+                <pre style="text-align: left; overflow-x: auto; padding: 20px; background: rgba(0, 0, 0, 0.35); border-radius: 8px;"><code>Internet Traffic
+       ↓
+Cloudflare Edge
+       ↓
+Access Authentication
+       ↓
+WAF Rate Limiting
+       ↓
+Cloudflare Tunnel
+       ↓
+Ubuntu / Splunk</code></pre>
+
+            </div>
+
+
+            <!-- GitHub Note -->
+
+            <p style="margin-top: 30px;">
+                This project was built as a hands-on homelab implementation using
+                Cloudflare and Splunk. The documentation focuses on the architecture,
+                testing process, and telemetry verification.
+            </p>
+
+
+        </div>
+
+    </main>
+
+
+    <script src="script.js"></script>
 
 </body>
 </html>
