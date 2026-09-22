@@ -75,5 +75,349 @@
                 retrieves threat intelligence from VirusTotal and URLScan.io, and
                 prepares the resulting telemetry for analysis by an AI SOC agent.
             </p>
-```
 
+            <p>
+                The AI agent uses Google Gemini through a LangChain AI Agent node to
+                analyze the collected evidence, identify key risk indicators,
+                highlight potential targeted brands, and generate recommended SOC
+                investigation actions. The final analysis is formatted into an HTML
+                security report and delivered through email for analyst review.
+            </p>
+
+
+            <!-- Architecture & Tech Stack -->
+
+            <h3 style="color: #fff; margin-top: 30px; margin-bottom: 10px;">
+                Architecture &amp; Tech Stack
+            </h3>
+
+            <p>
+                <strong>Orchestration:</strong> n8n (Self-Hosted)<br>
+                <strong>Threat Intelligence:</strong> VirusTotal API, URLScan.io<br>
+                <strong>AI Model:</strong> Google Gemini<br>
+                <strong>AI Framework:</strong> LangChain AI Agent<br>
+                <strong>Workflow Logic:</strong> JavaScript / n8n Code Nodes<br>
+                <strong>Output:</strong> Structured HTML security report<br>
+                <strong>Notification:</strong> Email / SMTP
+            </p>
+
+
+            <!-- Workflow -->
+
+            <h3 style="color: #fff; margin-top: 30px; margin-bottom: 10px;">
+                Workflow
+            </h3>
+
+            <p>
+                The workflow connects threat intelligence collection, telemetry
+                normalization, and AI-assisted analysis into a single investigation
+                pipeline.
+            </p>
+
+            <div style="margin: 20px 0; text-align: center;">
+
+                <pre style="text-align: left; overflow-x: auto; padding: 20px; background: rgba(0, 0, 0, 0.35); border-radius: 8px;"><code>Suspicious URL
+     ↓
+URL Encoding
+     ↓
+VirusTotal Threat Intelligence
+     ↓
+URLScan.io Web Analysis
+     ↓
+Telemetry Normalization
+     ↓
+AI SOC Agent
+     ↓
+Threat Analysis &amp; KRIs
+     ↓
+HTML Security Report
+     ↓
+Email Delivery
+     ↓
+Analyst Review</code></pre>
+
+            </div>
+
+            <div style="margin: 20px 0; text-align: center;">
+                <img
+                    src="workflow.png"
+                    alt="Complete n8n workflow for the AI SOC phishing triage agent"
+                    style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3);"
+                >
+            </div>
+
+
+            <!-- Implementation Phases -->
+
+            <h3 style="color: #fff; margin-top: 30px; margin-bottom: 10px;">
+                Implementation Phases
+            </h3>
+
+
+            <!-- Phase 1 -->
+
+            <p>
+                <strong style="color: #38bdf8;">Phase 1:</strong>
+                Suspicious URL Input and Encoding<br>
+
+                The workflow begins with a suspicious URL entered through the
+                n8n workflow. A JavaScript Code Node then prepares the URL for
+                VirusTotal by converting it into the URL-safe Base64 format
+                required by the VirusTotal API.
+            </p>
+
+            <div style="margin: 20px 0; text-align: center;">
+                <img
+                    src="encode-url.png"
+                    alt="n8n JavaScript node encoding the suspicious URL"
+                    style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3);"
+                >
+            </div>
+
+
+            <!-- Phase 2 -->
+
+            <p>
+                <strong style="color: #38bdf8;">Phase 2:</strong>
+                VirusTotal Threat Intelligence<br>
+
+                The encoded URL is sent to VirusTotal through an HTTP Request Node.
+                VirusTotal provides reputation and security intelligence that can
+                be used as evidence during the phishing investigation, including
+                vendor detections and URL classifications.
+            </p>
+
+            <div style="margin: 20px 0; text-align: center;">
+                <img
+                    src="virustotal.png"
+                    alt="VirusTotal threat intelligence results"
+                    style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3);"
+                >
+            </div>
+
+
+            <!-- Phase 3 -->
+
+            <p>
+                <strong style="color: #38bdf8;">Phase 3:</strong>
+                URLScan.io Web Analysis<br>
+
+                The workflow also submits the suspicious URL to URLScan.io for
+                browser-based analysis. URLScan.io can provide additional evidence
+                about the webpage and the infrastructure involved in the request.
+            </p>
+
+            <p>
+                Because the URLScan.io scan is processed asynchronously, the workflow
+                waits for the scan to complete before retrieving the resulting analysis.
+                This is handled using separate scan, wait, and get-scan steps in n8n.
+            </p>
+
+            <div style="margin: 20px 0; text-align: center;">
+                <img
+                    src="perform-scan.png"
+                    alt="URLScan.io perform scan node"
+                    style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3);"
+                >
+            </div>
+
+            <div style="margin: 20px 0; text-align: center;">
+                <img
+                    src="scan-wait.png"
+                    alt="n8n wait node for the URLScan.io analysis"
+                    style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3);"
+                >
+            </div>
+
+            <div style="margin: 20px 0; text-align: center;">
+                <img
+                    src="get-scan.png"
+                    alt="URLScan.io get scan node"
+                    style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3);"
+                >
+            </div>
+
+
+            <!-- Phase 4 -->
+
+            <p>
+                <strong style="color: #38bdf8;">Phase 4:</strong>
+                Security Telemetry Normalization<br>
+
+                The results from the threat intelligence sources contain a large
+                amount of raw JSON data. Before sending this information to the
+                AI agent, the workflow prepares the relevant security evidence
+                into a more consistent structure.
+            </p>
+
+            <p>
+                This step allows the AI agent to focus on useful phishing indicators
+                rather than processing unrelated API fields. Relevant evidence can
+                include URL reputation results, classifications, webpage indicators,
+                and potential targeted brands.
+            </p>
+
+            <div style="margin: 20px 0; text-align: center;">
+                <img
+                    src="prepare-report.png"
+                    alt="n8n node preparing normalized security report data"
+                    style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3);"
+                >
+            </div>
+
+
+            <!-- Phase 5 -->
+
+            <p>
+                <strong style="color: #38bdf8;">Phase 5:</strong>
+                AI SOC Agent Analysis<br>
+
+                The normalized security evidence is passed to a LangChain AI Agent
+                powered by Google Gemini. The agent analyzes the available evidence
+                using SOC-oriented phishing triage instructions.
+            </p>
+
+            <p>
+                The analysis focuses on identifying key risk indicators, potential
+                targeted brands, supporting evidence, threat characteristics, and
+                recommended SOC investigation actions. The AI output is intended to
+                assist an analyst with the initial investigation rather than replace
+                analyst judgment.
+            </p>
+
+            <div style="margin: 20px 0; text-align: center;">
+                <img
+                    src="ai-agent.png"
+                    alt="LangChain AI Agent powered by Google Gemini"
+                    style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3);"
+                >
+            </div>
+
+
+            <!-- Phase 6 -->
+
+            <p>
+                <strong style="color: #38bdf8;">Phase 6:</strong>
+                Automated Incident Report<br>
+
+                After the AI analysis is completed, the workflow formats the results
+                into a structured HTML security report. The report contains the
+                investigation findings and recommended next steps so the output can
+                be reviewed by a security analyst.
+            </p>
+
+            <p>
+                The completed report is then delivered through the configured email
+                node, creating a simple handoff from automated analysis to analyst
+                review.
+            </p>
+
+            <div style="margin: 20px 0; text-align: center;">
+                <img
+                    src="send-email.png"
+                    alt="n8n email delivery node for the generated security report"
+                    style="max-width: 100%; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3);"
+                >
+            </div>
+
+
+            <!-- Example Investigation -->
+
+            <h3 style="color: #fff; margin-top: 30px; margin-bottom: 10px;">
+                Example Investigation
+            </h3>
+
+            <p>
+                To test the workflow, I analyzed a suspicious URL using the completed
+                pipeline. VirusTotal identified multiple vendor detections and
+                classified the URL as phishing/malicious.
+            </p>
+
+            <p>
+                URLScan.io provided additional webpage evidence, including indicators
+                associated with a potential Microsoft-targeted phishing page and a
+                password input element. Additional analysis showed Microsoft-related
+                visual assets and suspicious JavaScript behavior.
+            </p>
+
+            <p>
+                The AI SOC agent used the combined evidence to produce a structured
+                phishing assessment containing the threat classification, confidence
+                level, potential targeted brand, key risk indicators, supporting
+                evidence, and recommended SOC investigation actions.
+            </p>
+
+
+            <!-- Security Relevance -->
+
+            <h3 style="color: #fff; margin-top: 30px; margin-bottom: 10px;">
+                Security Relevance
+            </h3>
+
+            <p>
+                Phishing investigations often require analysts to correlate evidence
+                from multiple security sources. This project demonstrates how threat
+                intelligence APIs and AI-assisted analysis can be connected into a
+                repeatable workflow for initial phishing triage.
+            </p>
+
+            <p>
+                The project is intentionally designed around analyst assistance.
+                The AI agent analyzes the available telemetry and generates findings
+                and recommendations, while final classification and response decisions
+                remain with the security analyst.
+            </p>
+
+            <p>
+                The workflow demonstrates a basic AI-assisted security telemetry
+                pipeline:
+            </p>
+
+            <div style="margin: 20px 0; text-align: center;">
+
+                <pre style="text-align: left; overflow-x: auto; padding: 20px; background: rgba(0, 0, 0, 0.35); border-radius: 8px;"><code>Suspicious URL
+     ↓
+Threat Intelligence APIs
+     ↓
+Security Telemetry
+     ↓
+Data Normalization
+     ↓
+AI SOC Agent
+     ↓
+Threat Assessment
+     ↓
+Structured Security Report
+     ↓
+Analyst Review</code></pre>
+
+            </div>
+
+
+            <!-- GitHub -->
+
+            <div style="margin-top: 35px; text-align: center;">
+
+                <a
+                    href="https://github.com/RaihanSAhmed/ai-soc-phishing-triage"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="project-link"
+                    style="display: inline-block; padding: 10px 20px; background: #0ea5e9; color: #fff; border-radius: 6px; text-decoration: none; font-weight: 600;"
+                >
+                    <i class="fab fa-github"></i>
+                    View Source Code on GitHub
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
+```
